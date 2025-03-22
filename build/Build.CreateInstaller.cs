@@ -34,11 +34,9 @@ sealed partial class Build
                 var targetDirectories = Directory.GetDirectories(wixTarget.Directory, $"* {configuration} *", SearchOption.AllDirectories);
                 Assert.NotEmpty(targetDirectories, "No content were found to create an installer");
 
-                foreach (var targetDirectory in targetDirectories)
-                {
-                    var process = ProcessTasks.StartProcess(builderFile, targetDirectory.DoubleQuoteIfNeeded(), logInvocation: false, logger: InstallerLogger);
-                    process.AssertZeroExitCode();
-                }
+                var arguments = targetDirectories.Select(path => path.DoubleQuoteIfNeeded()).JoinSpace();
+                var process = ProcessTasks.StartProcess(builderFile, arguments, logInvocation: false, logger: InstallerLogger);
+                process.AssertZeroExitCode();
             }
         });
 
