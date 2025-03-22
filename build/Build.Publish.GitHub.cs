@@ -15,7 +15,7 @@ sealed partial class Build
             var gitHubName = GitRepository.GetGitHubName();
             var gitHubOwner = GitRepository.GetGitHubOwner();
 
-            var artifacts = Directory.GetFiles(ArtifactsDirectory, "*");
+            var artifacts = Directory.GetFiles(ArtifactsDirectory, "*", SearchOption.AllDirectories);
             Assert.NotEmpty(artifacts, "No artifacts were found to create the Release");
 
             var changelogBuilder = CreateChangelogBuilder();
